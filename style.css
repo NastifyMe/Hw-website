@@ -181,3 +181,151 @@ p {
     border-radius: 10px;
     font-size: 18px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===================== */
+/* 📱 АДАПТИВ ДЛЯ ТЕЛЕФОНА */
+/* ===================== */
+
+@media (max-width: 768px) {
+
+    body {
+      padding: 10px;
+    }
+  
+    /* Главный контейнер */
+    #container {
+      padding: 20px 10px;
+      text-align: center;
+    }
+  
+    .title {
+      font-size: 24px;
+    }
+  
+    /* Кнопки на главной */
+    .container-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  
+    .container-btns button {
+      width: 100%;
+      font-size: 16px;
+      padding: 12px;
+    }
+  
+    /* Кнопки HW */
+    .container_btn_hw {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0 10px;
+    }
+  
+    .hw {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+    }
+  
+    /* Страницы HW */
+    .container_hw-page1,
+    .container_hw-page2 {
+      padding: 10px;
+    }
+  
+    .container_hw1,
+    .container_hw2 {
+      padding: 15px;
+    }
+  
+    .title_task {
+      font-size: 20px;
+      text-align: center;
+    }
+  
+    /* Инпут имени */
+    .name {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+    }
+  
+    /* Вопросы */
+    .frase p {
+      font-size: 15px;
+      line-height: 1.4;
+    }
+  
+    .frase input {
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px;
+      font-size: 15px;
+    }
+  
+    /* Оценка */
+    .nota {
+      font-size: 16px;
+      text-align: center;
+    }
+  
+    /* Кнопки Назад */
+    .container_back button {
+      width: 100%;
+      padding: 10px;
+      font-size: 15px;
+    }
+  
+    /* 📊 ЖУРНАЛ */
+    .container_book {
+      padding: 10px;
+    }
+  
+    .titleBook {
+      font-size: 22px;
+      text-align: center;
+    }
+  
+    /* Таблица с горизонтальным скроллом */
+    .container_book table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  
+    table th,
+    table td {
+      padding: 10px;
+      font-size: 14px;
+    }
+  
+    /* Кнопки в таблице */
+    table button {
+      font-size: 13px;
+      padding: 6px 8px;
+    }
+  }
+  
