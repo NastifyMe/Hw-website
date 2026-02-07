@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Delius&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <h1 class="title">Сайт для домашних заданий</h1>
+        <div class="container-btns">
+            <button class="hws">Домашние задания</button>
+            <button class="book">Журнал</button>
+        </div>
+    </div>
+    
+    <div id="container_journal" style="display:none;">
+        <div class="container_back">
+            <button class="back_journal">Назад</button>
+        </div>
+        <div class="container_book">
+            <h2 class="titleBook">Журнал оценок</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Дата</th>
+                    <th>Оценка</th>
+                    <th>Ответы</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody id="journal_body">
+                <!-- Здесь будут добавляться записи -->
+            </tbody>
+        </table>
+        </div>
+        
+    </div>
+
+    <div id="container_hw">
+        <div class="container_back">
+            <button class="back">Назад</button>
+        </div>
+        <div class="container_btn_hw">
+            <button id="1" class="hw">Tarea 1</button>
+            <button id="2" class="hw">Tarea 2</button>
+        </div>
+    </div>
+
+    <div class="container_hw-page1">
+        <div class="container_back">
+            <button class="back2">Назад</button>
+        </div>
+
+        <!-- HW1---------------------------------------------------------------------------------------- -->
+        <div class="container_hw1">
+            <h2 class="title_task">Ejercicio 1</h2>
+            <input class="name" type="text" placeholder="Nombre"> 
+            <ol>
+                <li class="frase">
+                    <p>Cada vez que mis hermanos <span><input type="text"></span> (ayudar) en casa, mi madre está feliz.</p>
+                </li>
+                <li class="frase">
+                    <p>Aunque tú <span><input type="text"></span> (estar) cansado, sigues estudiando.</p>
+                </li>
+                <li class="frase">
+                    <p>Mis amigos y yo <span><input type="text"></span> (viajar) juntos los fines de semana cuando podemos.</p>
+                </li>
+                <li class="frase">
+                    <p>Vosotros nunca <span><input type="text"></span> (dar) importancia a los detalles.</p>
+                </li>
+                <li class="frase">
+                    <p>La profesora <span><input type="text"></span> (explicar) la lección con muchos ejemplos interesantes.</p>
+                </li>
+            </ol>
+            <p class="nota">Nota: <span class="notaAuto"></span></p>
+        </div>
+    </div>
+
+    <!-- HW2------------------------------------------------------------------------------------- -->
+
+    <div class="container_hw-page2">
+        <div class="container_back">
+            <button class="back3">Назад</button>
+        </div>
+        <div class="container_hw2">
+            <h2 class="title_task">Ejercicio 1</h2>
+            <input class="name" type="text" placeholder="Nombre"> 
+            <p>Вставь comer / beber / leer / estar / tener в нужной форме:</p>
+            <ol>
+                <li class="frase">
+                    <p>Yo <span><input type="text"></span> en casa ahora.</p>
+                </li>
+                <li class="frase">
+                    <p>Nosotros <span><input type="text"></span> pizza los viernes.</p>
+                </li>
+                <li class="frase">
+                    <p>Ella <span><input type="text"></span> un libro interesante.</p>
+                </li>
+                <li class="frase">
+                    <p>Tú <span><input type="text"></span> mucha hambre.</p>
+                </li>
+                <li class="frase">
+                    <p>Ellos <span><input type="text"></span> café por la mañana.</p>
+                </li>
+            </ol>
+            <p class="nota">Nota: <span class="notaAuto"></span></p>
+        </div>
+    </div>
+    
+    
+
+    <script src="./index.js"></script>
+</body>
+</html>
