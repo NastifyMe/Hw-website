@@ -1,76 +1,94 @@
-// Навигация между страницами
+// ========================
+// 1️⃣ Навигация
+// ========================
 const hws = document.querySelector(".hws");
 const back1 = document.querySelector(".back");
 const container = document.getElementById("container");
 const container_hw = document.getElementById("container_hw");
+
 const hw1 = document.getElementById("1");
 const hw2 = document.getElementById("2");
+
 const container_hwPage1 = document.querySelector(".container_hw-page1");
-const container_hwPage2 = document.querySelector('.container_hw-page2')
+const container_hwPage2 = document.querySelector(".container_hw-page2");
+
 const back2 = document.querySelector(".back2");
 const back3 = document.querySelector(".back3");
 
-// Переход на домашки
-hws.addEventListener("click", () => {
+hws.onclick = () => {
   container.style.display = "none";
   container_hw.style.display = "flex";
-});
+};
 
-// Назад на главную
-back1.addEventListener("click", () => {
+back1.onclick = () => {
   container.style.display = "flex";
   container_hw.style.display = "none";
-});
+};
 
-// Открыть домашку
-hw1.addEventListener("click", () => {
-  container_hwPage1.style.display = "flex";
+hw1.onclick = () => {
   container_hw.style.display = "none";
-});
-hw2.addEventListener("click", () => {
-    container_hwPage2.style.display = "flex";
-    container_hw.style.display = "none";
-  });
+  container_hwPage1.style.display = "flex";
+};
 
-// Назад к списку домашек
-back2.addEventListener("click", () => {
+hw2.onclick = () => {
+  container_hw.style.display = "none";
+  container_hwPage2.style.display = "flex";
+};
+
+back2.onclick = () => {
   container_hwPage1.style.display = "none";
   container_hw.style.display = "flex";
-});
-back3.addEventListener("click", () => {
-    container_hwPage2.style.display = "none";
-    container_hw.style.display = "flex";
-  });
+};
 
+back3.onclick = () => {
+  container_hwPage2.style.display = "none";
+  container_hw.style.display = "flex";
+};
 
+// ========================
+// 2️⃣ Firebase
+// ========================
+const firebaseConfig = {
+  databaseURL: "https://hw-website-25bce-default-rtdb.firebaseio.com"
+};
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-
-// Журнал
+// ========================
+// 3️⃣ Журнал
+// ========================
 const journalBtn = document.querySelector(".book");
 const container_journal = document.getElementById("container_journal");
 const back_journal = document.querySelector(".back_journal");
 const journalBody = document.getElementById("journal_body");
 
-// Массив для хранения всех записей
-let journalEntries = JSON.parse(localStorage.getItem("journalEntries")) || [];
+journalBtn.onclick = () => {
+  container.style.display = "none";
+  container_journal.style.display = "flex";
+  fetchJournal();
+};
 
-// Функция рендера журнала
-function renderJournal() {
+back_journal.onclick = () => {
+  container_journal.style.display = "none";
+  container.style.display = "flex";
+};
+
+function renderJournal(entries) {
   journalBody.innerHTML = "";
 
-  journalEntries.forEach((entry, index) => {
+  entries.forEach(entry => {
     const row = document.createElement("tr");
 
-    // Имя
     const nameCell = document.createElement("td");
     nameCell.textContent = entry.name;
 
-    // Дата
+    const taskCell = document.createElement("td");
+    taskCell.textContent = entry.task;
+
     const dateCell = document.createElement("td");
     dateCell.textContent = entry.date;
 
-    // Оценка
     const scoreCell = document.createElement("td");
     scoreCell.textContent = entry.score;
 
@@ -79,34 +97,25 @@ function renderJournal() {
     else if (scoreValue >= 2) scoreCell.classList.add("score-mid");
     else scoreCell.classList.add("score-bad");
 
-    // Кнопка просмотра
     const viewCell = document.createElement("td");
     const viewBtn = document.createElement("button");
     viewBtn.textContent = "Ответы";
     viewBtn.classList.add("btn-view");
-
-    viewBtn.addEventListener("click", () => {
-      alert(`Ответы:\n${entry.answers.join(", ")}`);
-    });
-
+    viewBtn.onclick = () => alert(entry.answers.join(", "));
     viewCell.appendChild(viewBtn);
 
-    // Кнопка удаления
     const deleteCell = document.createElement("td");
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "✖";
     deleteBtn.classList.add("btn-delete");
-
-    deleteBtn.addEventListener("click", () => {
-      journalEntries.splice(index, 1);
-      localStorage.setItem("journalEntries", JSON.stringify(journalEntries));
-      renderJournal();
-    });
-
+    deleteBtn.onclick = () => {
+      db.ref("journal/" + entry.id).remove();
+    };
     deleteCell.appendChild(deleteBtn);
 
     row.append(
       nameCell,
+      taskCell,
       dateCell,
       scoreCell,
       viewCell,
@@ -117,136 +126,78 @@ function renderJournal() {
   });
 }
 
-renderJournal();
+function fetchJournal() {
+  db.ref("journal").on("value", snapshot => {
+    const data = snapshot.val() || {};
+    const entries = Object.keys(data).map(id => ({
+      id,
+      ...data[id]
+    }));
+    renderJournal(entries);
+  });
+}
 
+// ========================
+// 4️⃣ Проверка домашек
+// ========================
+function initHW(containerHw, correctAnswers, taskName) {
+  const nameInp = containerHw.querySelector(".name");
 
-// Кнопки для перехода в журнал
-journalBtn.addEventListener("click", () => {
-  container.style.display = "none";
-  container_journal.style.display = "flex";
-});
+  const btn = document.createElement("button");
+  btn.textContent = "Проверить";
+  btn.classList.add("check");
+  btn.style.marginTop = "20px";
+  containerHw.appendChild(btn);
 
-back_journal.addEventListener("click", () => {
-  container_journal.style.display = "none";
-  container.style.display = "flex";
-});
+  btn.onclick = () => {
+    const inputs = containerHw.querySelectorAll("input[type='text']:not(.name)");
 
-
-
-
-// HW1
-const containerHw1 = document.querySelector(".container_hw1");
-const nameInp = containerHw1.querySelector('.name');
-
-
-// Кнопка проверки
-const submitBtn = document.createElement("button");
-submitBtn.textContent = "Проверить";
-submitBtn.style.marginTop = "20px";
-submitBtn.classList.add('check');
-containerHw1.appendChild(submitBtn);
-
-// Правильные ответы
-const correctAnswers = ["ayudan","estás","viajamos","dais","explica"];
-
-// Проверка домашки и добавление в журнал
-    submitBtn.addEventListener("click", () => {
-    const inputs = containerHw1.querySelectorAll("input[type='text']:not(.name)");
-  
-    // Проверка на заполненность
-    if (!nameInp.value.trim() || Array.from(inputs).some(input => !input.value.trim())) {
-      alert('Введи имя и все ответы!');
+    if (!nameInp.value.trim() || [...inputs].some(i => !i.value.trim())) {
+      alert("Введи имя и все ответы!");
       return;
     }
-  
+
     let score = 0;
-    const studentAnswers = [];
-  
-    inputs.forEach((input, index) => {
-      const answer = input.value.trim();
-      studentAnswers.push(answer);
-      if (answer.toLowerCase() === correctAnswers[index].toLowerCase()) {
+    const answers = [];
+
+    inputs.forEach((input, i) => {
+      const val = input.value.trim();
+      answers.push(val);
+      if (val.toLowerCase() === correctAnswers[i]) {
         input.style.border = "2px solid green";
         score++;
       } else {
         input.style.border = "2px solid red";
       }
     });
-  
-    // Вывод оценки
-    const notaSpan = containerHw1.querySelector(".notaAuto");
-    notaSpan.textContent = `${score} / ${correctAnswers.length}`;
-  
-    // Добавляем запись в журнал
-    const now = new Date();
-    const newEntry = {
+
+    containerHw.querySelector(".notaAuto").textContent =
+      `${score} / ${correctAnswers.length}`;
+
+    const entry = {
       name: nameInp.value.trim(),
-      date: now.toLocaleDateString() + " " + now.toLocaleTimeString(),
+      task: taskName,
+      date: new Date().toLocaleString(),
       score: `${score} / ${correctAnswers.length}`,
-      answers: studentAnswers
+      answers
     };
-  
-    journalEntries.push(newEntry);
-    localStorage.setItem("journalEntries", JSON.stringify(journalEntries));
-    renderJournal();
-  });
 
+    db.ref("journal").push(entry);
+    alert("Оценка сохранена ✅");
+  };
+}
 
+// ========================
+// 5️⃣ Инициализация
+// ========================
+initHW(
+  document.querySelector(".container_hw1"),
+  ["ayudan", "estás", "viajamos", "dais", "explica"],
+  "Tarea 1"
+);
 
-// HW2
-const containerHw2 = document.querySelector(".container_hw2");
-const nameInp2 = containerHw2.querySelector('.name');
-
-// Кнопка проверки
-const submitBtn2 = document.createElement("button");
-submitBtn2.textContent = "Проверить";
-submitBtn2.style.marginTop = "20px";
-submitBtn2.classList.add('check');
-containerHw2.appendChild(submitBtn2);
-
-// Правильные ответы
-const correctAnswers2 = ["estoy","comemos","lee","tienes","beben"];
-
-// Проверка домашки и добавление в журнал
-    submitBtn2.addEventListener("click", () => {
-    const inputs = containerHw2.querySelectorAll("input[type='text']:not(.name)");
-  
-    // Проверка на заполненность
-    if (!nameInp2.value.trim() || Array.from(inputs).some(input => !input.value.trim())) {
-      alert('Введи имя и все ответы!');
-      return;
-    }
-  
-    let score = 0;
-    const studentAnswers2 = [];
-  
-    inputs.forEach((input, index) => {
-      const answer2 = input.value.trim();
-      studentAnswers2.push(answer2);
-      if (answer2.toLowerCase() === correctAnswers2[index].toLowerCase()) {
-        input.style.border = "2px solid green";
-        score++;
-      } else {
-        input.style.border = "2px solid red";
-      }
-    });
-  
-    // Вывод оценки
-    const notaSpan2 = containerHw2.querySelector(".notaAuto");
-    notaSpan2.textContent = `${score} / ${correctAnswers2.length}`;
-  
-    // Добавляем запись в журнал
-    const now2 = new Date();
-    const newEntry2 = {
-      name: nameInp2.value.trim(),
-      date: now2.toLocaleDateString() + " " + now2.toLocaleTimeString(),
-      score: `${score} / ${correctAnswers2.length}`,
-      answers: studentAnswers2
-    };
-  
-    journalEntries.push(newEntry2);
-    localStorage.setItem("journalEntries", JSON.stringify(journalEntries));
-    renderJournal();
-  });
-
-
+initHW(
+  document.querySelector(".container_hw2"),
+  ["estoy", "comemos", "lee", "tienes", "beben"],
+  "Tarea 2"
+);
